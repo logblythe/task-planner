@@ -107,7 +107,7 @@ const App = () => {
     <DragDropContext
       onDragEnd={handleDragEnd}
       onDragStart={handleDragStart}
-      // onDragUpdate={handleDragUpdate}
+      onDragUpdate={handleDragUpdate}
     >
       <Droppable droppableId="all-columns" direction="horizontal" type="column">
         {(provided) => (
