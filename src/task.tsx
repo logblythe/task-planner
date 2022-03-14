@@ -1,24 +1,26 @@
+import { Card, Group, Text, Title } from "@mantine/core";
 import React from "react";
 import { Draggable } from "react-beautiful-dnd";
-import styled from "styled-components";
+// import styled from "styled-components";
 import { ITask } from "./initial-data";
 
-const Container = styled.div<any>`
-  border: 1px solid lightgrey;
-  border-radius: 2px;
-  padding: 8px;
-  margin-bottom: 8px;
-  background-color: ${(props: any) =>
-    props.isDragDisabled
-      ? "lightgrey"
-      : props.isDragging
-      ? "lightgreen"
-      : "white"};
-  display: flex;
-`;
+// const Container = styled.div<any>`
+//   border: 1px solid lightgrey;
+//   border-radius: 2px;
+//   padding: 8px;
+//   margin-bottom: 8px;
+//   background-color: ${(props: any) =>
+//     props.isDragDisabled
+//       ? "lightgrey"
+//       : props.isDragging
+//       ? "lightgreen"
+//       : "white"};
+//   display: flex;
+// `;
 
 const Task = (props: { task: ITask; index: number }) => {
-  const isDragDisabled = props.task.id === "task-1";
+  // const isDragDisabled = props.task.id === "task-1";
+  const isDragDisabled = false;
   return (
     <Draggable
       draggableId={props.task.id}
@@ -27,16 +29,34 @@ const Task = (props: { task: ITask; index: number }) => {
     >
       {(provided, snapshot) => {
         return (
-          <Container
+          <Card
+            shadow="md"
+            p="sm"
+            sx={(theme) => ({
+              width: "100%",
+              borderRadius: 8,
+            })}
             {...provided.draggableProps}
             {...provided.dragHandleProps}
             ref={provided.innerRef}
-            isDragging={snapshot.isDragging}
-            isDragDisabled={isDragDisabled}
           >
-            {props.task.content}
-          </Container>
+            <Group direction="column">
+              {props.task.title && <Title order={3}>{props.task.title}</Title>}
+              {props.task.content && <Text>{props.task.content}</Text>}
+            </Group>
+          </Card>
         );
+        // return (
+        //   <Container
+        //     {...provided.draggableProps}
+        //     {...provided.dragHandleProps}
+        //     ref={provided.innerRef}
+        //     isDragging={snapshot.isDragging}
+        //     isDragDisabled={isDragDisabled}
+        //   >
+        //     {props.task.content}
+        //   </Container>
+        // );
       }}
     </Draggable>
   );

@@ -1,60 +1,103 @@
+import {
+  Container,
+  CSSObject,
+  useMantineTheme,
+  Group,
+  Button,
+  Title,
+} from "@mantine/core";
 import React from "react";
 import { Draggable, Droppable } from "react-beautiful-dnd";
-import styled from "styled-components";
+import { Plus } from "tabler-icons-react";
+import AddTaskModal from "./AddTaskModal";
 import { IColumn, ITask } from "./initial-data";
 import Task from "./task";
-
-const Container = styled.div`
-  margin: 8px;
-  border: 1px solid lightgrey;
-  border-radius: 2px;
-  width: 220px;
-  display: flex;
-  flex-direction: column;
-  background-color: white;
-`;
-
-const Title = styled.h3`
-  padding: 8px;
-`;
-
-const TaskList = styled.div<any>`
-  padding: 8px;
-  transition: background-color 0.2s ease;
-  background-color: ${(props: any) =>
-    props.isDraggingOver ? "skyblue" : "inherit"};
-  flex-grow: 1;
-  min-height: 100px;
-`;
 
 const Column = (props: {
   column: IColumn;
   tasks: ITask[];
   isDropDisabled: boolean;
   index: number;
+  onCreateTask: (task: ITask, columnId: string) => void;
 }) => {
+  const theme = useMantineTheme();
+
+  const containerStyles: CSSObject = {
+    margin: theme.spacing.lg,
+    border: `1px solid ${
+      theme.colorScheme === "dark" ? theme.colors.blue[6] : theme.colors.blue[3]
+    }`,
+    borderRadius: 2,
+    minWidth: 220,
+    backgroundColor:
+      theme.colorScheme === "dark"
+        ? theme.colors.dark[5]
+        : theme.colors.gray[1],
+    "&:hover": {
+      backgroundColor:
+        theme.colorScheme === "dark"
+          ? theme.colors.dark[4]
+          : theme.colors.gray[2],
+    },
+  };
+
+  const [opened, setOpened] = React.useState(false);
+
+  const showAddModal = () => setOpened(true);
+
+  const closeAddModal = () => setOpened(false);
+
   return (
     <Draggable draggableId={props.column.id} index={props.index}>
       {(provided) => (
-        <Container {...provided.draggableProps} ref={provided.innerRef}>
+        <Container
+          sx={containerStyles}
+          {...provided.draggableProps}
+          ref={provided.innerRef}
+        >
           <Title {...provided.dragHandleProps}>{props.column.title}</Title>
           <Droppable
             droppableId={props.column.id}
             // type={props.column.id === "column-3" ? "done" : "active"}
             // isDropDisabled={true}
-            isDropDisabled={props.isDropDisabled}
+            // isDropDisabled={props.isDropDisabled}
           >
             {(provided, snapshot) => (
-              <TaskList
-                {...provided.droppableProps}
-                ref={provided.innerRef}
-                isDraggingOver={snapshot.isDraggingOver}
-              >
-                {props.tasks.map((task, index) => (
-                  <Task key={task.id} task={task} index={index} />
-                ))}
-                {provided.placeholder}
-              </TaskList>
+              <Group direction="column" py="sm" spacing="xl">
+                <Group
+                  direction="column"
+                  py="sm"
+                  spacing="sm"
+                  {...provided.droppableProps}
+                  ref={provided.innerRef}
+                  style={{
+                    background: snapshot.isDraggingOver ? "red" : "inherit",
+                    transition: "background-color 0.2s ease",
+                    minHeight: "100px",
+                    width: "100%",
+                  }}
+                >
+                  {props.tasks.map((task, index) => (
+                    <Task key={task.id} task={task} index={index} />
+                  ))}
+                  {provided.placeholder}
+                </Group>
+                <Button
+                  fullWidth
+                  variant="outline"
+                  leftIcon={<Plus />}
+                  onClick={showAddModal}
+                >
+                  Card
+                </Button>
+                <AddTaskModal
+                  opened={opened}
+                  onClose={closeAddModal}
+                  onCreateTask={(task) => {
+                    props.onCreateTask(task, props.column.id);
+                  }}
+                />
+              </Group>
             )}
           </Droppable>
         </Container>
