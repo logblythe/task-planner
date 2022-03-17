@@ -1,8 +1,10 @@
+type Priority = "High" | "Medium" | "Low";
 export interface ITask {
   id: string;
   content: string;
   title?: string;
   description?: string;
+  priority: Priority;
 }
 
 export interface IColumn {
@@ -22,12 +24,48 @@ interface IInitialData {
 }
 const initialData: IInitialData = {
   tasks: {
-    "task-1": { id: "task-1", content: "Take out the garbage" },
-    "task-2": { id: "task-2", content: "Watch my favorite show" },
-    "task-3": { id: "task-3", content: "Charge my phone" },
-    "task-4": { id: "task-4", content: "Cook dinner" },
-    "task-5": { id: "task-5", content: "Eat dinner" },
-    "task-6": { id: "task-6", content: "Wake up early" },
+    "task-1": {
+      id: "task-1",
+      content: "Take out the garbage",
+      title: "Take out the garbage",
+      description: "Take out the garbage",
+      priority: "Low",
+    },
+    "task-2": {
+      id: "task-2",
+      content: "Watch my favorite show",
+      title: "Watch my favorite show",
+      description: "Watch my favorite show",
+      priority: "Low",
+    },
+    "task-3": {
+      id: "task-3",
+      content: "Charge my phone",
+      title: "Charge my phone",
+      description: "Charge my phone",
+      priority: "Low",
+    },
+    "task-4": {
+      id: "task-4",
+      content: "Cook dinner",
+      title: "Cook dinner",
+      description: "Cook dinner",
+      priority: "Low",
+    },
+    "task-5": {
+      id: "task-5",
+      content: "Eat dinner",
+      title: "Eat dinner",
+      description: "Eat dinner",
+      priority: "Low",
+    },
+    "task-6": {
+      id: "task-6",
+      content: "Wake up early",
+      title: "Wake up early",
+      description: "Wake up early",
+      priority: "Low",
+    },
   },
   columns: {
     "column-1": {

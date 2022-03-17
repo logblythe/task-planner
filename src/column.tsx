@@ -28,7 +28,7 @@ const Column = (props: {
       theme.colorScheme === "dark" ? theme.colors.blue[6] : theme.colors.blue[3]
     }`,
     borderRadius: 2,
-    minWidth: 220,
+    minWidth: "25%",
     backgroundColor:
       theme.colorScheme === "dark"
         ? theme.colors.dark[5]

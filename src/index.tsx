@@ -2,17 +2,17 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { MantineProvider } from "@mantine/core";
 import reportWebVitals from "./reportWebVitals";
-import Board from "./Board";
+import App from "./App";
 
 ReactDOM.render(
   <React.StrictMode>
     <MantineProvider
       theme={{
         fontFamily: "Open Sans, sans serif",
-        // colorScheme: "dark",
+        colorScheme: "dark",
       }}
     >
-      <Board />
+      <App />
     </MantineProvider>
   </React.StrictMode>,
   document.getElementById("root")

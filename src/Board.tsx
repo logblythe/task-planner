@@ -7,12 +7,19 @@ import {
   Burger,
   MediaQuery,
   useMantineTheme,
+  ActionIcon,
+  useMantineColorScheme,
+  Group,
 } from "@mantine/core";
 import BoardChild from "./BoardChild";
+import { MoonStars, Sun } from "tabler-icons-react";
 
 const Board = () => {
   const theme = useMantineTheme();
+  const { colorScheme, toggleColorScheme } = useMantineColorScheme();
   const [opened, setOpened] = React.useState(false);
+
+  const dark = colorScheme === "dark";
 
   return (
     <AppShell
@@ -31,7 +38,7 @@ const Board = () => {
           // when viewport size is less than theme.breakpoints.sm navbar width is 100%
           // viewport size > theme.breakpoints.sm – width is 300px
           // viewport size > theme.breakpoints.lg – width is 400px
-          width={{ sm: 300, lg: 400 }}
+          width={{ sm: 100, lg: 220 }}
         >
           <Text>Application navbar</Text>
         </Navbar>
@@ -40,7 +47,11 @@ const Board = () => {
         <Header height={70} p="md">
           {/* Handle other responsive styles with MediaQuery component or createStyles function */}
           <div
-            style={{ display: "flex", alignItems: "center", height: "100%" }}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              height: "100%",
+            }}
           >
             <MediaQuery largerThan="sm" styles={{ display: "none" }}>
               <Burger
@@ -51,7 +62,17 @@ const Board = () => {
                 mr="xl"
               />
             </MediaQuery>
-            <Text>Application header</Text>
+            <Group position="apart" style={{ width: "100%" }}>
+              <Text>Application header</Text>
+              <ActionIcon
+                variant="outline"
+                color={dark ? "yellow" : "blue"}
+                onClick={() => toggleColorScheme()}
+                title="Toggle color scheme"
+              >
+                {dark ? <Sun size={18} /> : <MoonStars size={18} />}
+              </ActionIcon>
+            </Group>
           </div>
         </Header>
       }

@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  Autocomplete,
   Box,
   Button,
   Group,
@@ -20,6 +21,7 @@ interface IProps {
 
 const schema = Yup.object().shape({
   title: Yup.string().min(2, "Required"),
+  priority: Yup.string().required("Required"),
 });
 
 const AddTaskModal: React.FC<IProps> = ({ opened, onClose, onCreateTask }) => {
@@ -27,17 +29,20 @@ const AddTaskModal: React.FC<IProps> = ({ opened, onClose, onCreateTask }) => {
     initialValues: {
       title: "",
       description: "",
+      priority: "",
     },
     schema: yupResolver(schema),
   });
 
   const handleSubmit = form.onSubmit((values: typeof form.values) => {
+    debugger;
     const { title, description } = values;
     const task: ITask = {
       id: Date.now().toString(),
-      content: title,
       title,
+      content: description,
       description,
+      priority: "High",
     };
     onCreateTask(task);
     onClose();
@@ -53,6 +58,13 @@ const AddTaskModal: React.FC<IProps> = ({ opened, onClose, onCreateTask }) => {
     >
       <Box sx={{ maxWidth: 300 }} mx="auto">
         <form onSubmit={handleSubmit}>
+          <Autocomplete
+            label="Priority"
+            placeholder="Pick one"
+            data={["High", "Medium", "Low"]}
+            {...form.getInputProps("priority")}
+          />
+          <Space h="md" />
           <TextInput
             size="sm"
             label="Title"

@@ -1,22 +1,6 @@
-import { Card, Group, Text, Title } from "@mantine/core";
-import React from "react";
 import { Draggable } from "react-beautiful-dnd";
-// import styled from "styled-components";
+import { Group, Paper, Text, Title } from "@mantine/core";
 import { ITask } from "./initial-data";
-
-// const Container = styled.div<any>`
-//   border: 1px solid lightgrey;
-//   border-radius: 2px;
-//   padding: 8px;
-//   margin-bottom: 8px;
-//   background-color: ${(props: any) =>
-//     props.isDragDisabled
-//       ? "lightgrey"
-//       : props.isDragging
-//       ? "lightgreen"
-//       : "white"};
-//   display: flex;
-// `;
 
 const Task = (props: { task: ITask; index: number }) => {
   // const isDragDisabled = props.task.id === "task-1";
@@ -29,9 +13,11 @@ const Task = (props: { task: ITask; index: number }) => {
     >
       {(provided, snapshot) => {
         return (
-          <Card
-            shadow="md"
-            p="sm"
+          <Paper
+            shadow="xl"
+            radius="md"
+            p="md"
+            withBorder
             sx={(theme) => ({
               width: "100%",
               borderRadius: 8,
@@ -40,23 +26,13 @@ const Task = (props: { task: ITask; index: number }) => {
             {...provided.dragHandleProps}
             ref={provided.innerRef}
           >
-            <Group direction="column">
+            <Group direction="column" spacing={8}>
               {props.task.title && <Title order={3}>{props.task.title}</Title>}
               {props.task.content && <Text>{props.task.content}</Text>}
+              <Text>{props.task.priority}</Text>
             </Group>
-          </Card>
+          </Paper>
         );
-        // return (
-        //   <Container
-        //     {...provided.draggableProps}
-        //     {...provided.dragHandleProps}
-        //     ref={provided.innerRef}
-        //     isDragging={snapshot.isDragging}
-        //     isDragDisabled={isDragDisabled}
-        //   >
-        //     {props.task.content}
-        //   </Container>
-        // );
       }}
     </Draggable>
   );
