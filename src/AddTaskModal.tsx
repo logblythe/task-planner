@@ -11,7 +11,7 @@ import {
 } from "@mantine/core";
 import { useForm, yupResolver } from "@mantine/form";
 import * as Yup from "yup";
-import { ITask } from "./initial-data";
+import { ITask, Priority } from "./initial-data";
 
 interface IProps {
   opened: boolean;
@@ -36,13 +36,13 @@ const AddTaskModal: React.FC<IProps> = ({ opened, onClose, onCreateTask }) => {
 
   const handleSubmit = form.onSubmit((values: typeof form.values) => {
     debugger;
-    const { title, description } = values;
+    const { title, description, priority } = values;
     const task: ITask = {
       id: Date.now().toString(),
       title,
       content: description,
-      description,
-      priority: "High",
+      description: description,
+      priority: priority as Priority,
     };
     onCreateTask(task);
     onClose();
