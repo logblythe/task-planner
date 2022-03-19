@@ -1,10 +1,10 @@
 import React from "react";
 import {
-  Autocomplete,
   Box,
   Button,
   Group,
   Modal,
+  NativeSelect,
   Space,
   Textarea,
   TextInput,
@@ -59,10 +59,10 @@ const TaskModal: React.FC<IProps> = ({
     >
       <Box sx={{ maxWidth: 300 }} mx="auto">
         <form onSubmit={handleSubmit}>
-          <Autocomplete
-            label="Priority"
-            placeholder="Pick one"
+          <NativeSelect
             data={["High", "Medium", "Low"]}
+            placeholder="Pick one"
+            label="Priority"
             {...form.getInputProps("priority")}
           />
           <Space h="md" />

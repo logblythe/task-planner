@@ -13,7 +13,7 @@ export interface IColumn {
   taskIds: string[];
 }
 
-interface IInitialData {
+export interface IInitialData {
   tasks: {
     [task: string]: ITask;
   };

@@ -6,9 +6,10 @@ import {
   Droppable,
   DropResult,
 } from "react-beautiful-dnd";
-import initialData, { ITask } from "./initial-data";
-import Column from "./column";
 import styled from "styled-components";
+import initialData, { IInitialData, ITask } from "./initial-data";
+import Column from "./column";
+import { useLocalStorage } from "@mantine/hooks";
 
 const Container = styled.div`
   display: flex;
@@ -16,7 +17,11 @@ const Container = styled.div`
 `;
 
 const BoardChild = () => {
-  const [state, setState] = React.useState(initialData);
+  const [state, setState] = useLocalStorage<IInitialData>({
+    key: "state-data",
+    defaultValue: initialData,
+  });
+
   const [homeIndex, setHomeIndex] = React.useState(0);
   const { tasks, columns, columnOrder } = state;
 

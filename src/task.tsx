@@ -1,14 +1,6 @@
 import { Draggable } from "react-beautiful-dnd";
-import {
-  Group,
-  Paper,
-  Text,
-  Menu,
-  Title,
-  Space,
-  ActionIcon,
-} from "@mantine/core";
-import { DotsVertical, Pencil, TrashX } from "tabler-icons-react";
+import { Group, Paper, Text, Title, Space, ActionIcon } from "@mantine/core";
+import { Pencil, TrashX } from "tabler-icons-react";
 import { ITask } from "./initial-data";
 import PriorityChip from "./PriorityChip";
 
@@ -45,28 +37,15 @@ const Task: React.FC<IProps> = ({ task, index, onEdit, onDelete }) => {
           >
             <Group direction="column" spacing={8}>
               <Group position="apart" style={{ width: "100%" }}>
-                {task.title && <Title order={3}>{task.title}</Title>}
-                <Menu
-                  control={
-                    <ActionIcon>
-                      <DotsVertical />
-                    </ActionIcon>
-                  }
-                >
-                  <Menu.Item
-                    icon={<Pencil size={16} />}
-                    onClick={() => onEdit(task)}
-                  >
-                    Edit
-                  </Menu.Item>
-                  <Menu.Item
-                    color="red"
-                    icon={<TrashX size={16} />}
-                    onClick={() => onDelete(task)}
-                  >
-                    Delete
-                  </Menu.Item>
-                </Menu>
+                <Title order={3}>{task.title}</Title>
+                <Group spacing={2}>
+                  <ActionIcon onClick={() => onEdit(task)}>
+                    <Pencil size={24} />
+                  </ActionIcon>
+                  <ActionIcon onClick={() => onDelete(task)} color="red">
+                    <TrashX size={24} />
+                  </ActionIcon>
+                </Group>
               </Group>
               {task.content && <Text>{task.content}</Text>}
               <Space h="md" />

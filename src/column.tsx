@@ -1,3 +1,5 @@
+import React, { useState } from "react";
+import { Draggable, Droppable } from "react-beautiful-dnd";
 import {
   Container,
   CSSObject,
@@ -6,13 +8,16 @@ import {
   Button,
   Title,
   Chip,
+  Text,
+  Paper,
+  Center,
+  ActionIcon,
 } from "@mantine/core";
-import React, { useState } from "react";
-import { Draggable, Droppable } from "react-beautiful-dnd";
+import { useDisclosure } from "@mantine/hooks";
+import { Plus } from "tabler-icons-react";
 import TaskModal from "./TaskModal";
 import { IColumn, ITask } from "./initial-data";
 import Task from "./task";
-import { useDisclosure } from "@mantine/hooks";
 
 interface IProps {
   column: IColumn;
@@ -100,6 +105,36 @@ const Column: React.FC<IProps> = ({
                     borderRadius: 16,
                   })}
                 >
+                  {tasks.length === 0 ? (
+                    <Paper
+                      radius="md"
+                      p="md"
+                      withBorder
+                      sx={(theme) => ({
+                        background:
+                          theme.colorScheme === "dark"
+                            ? "DimGrey"
+                            : "AliceBlue",
+                        width: "100%",
+                        borderRadius: 8,
+                        minHeight: "200px",
+                      })}
+                    >
+                      <Center>
+                        <Group direction="column" position="center">
+                          <ActionIcon
+                            variant="outline"
+                            onClick={() => handlers.open()}
+                            size={42}
+                          >
+                            <Plus size={42} />
+                          </ActionIcon>
+                          <Text>Drag the cards over here or add new task</Text>
+                        </Group>
+                      </Center>
+                    </Paper>
+                  ) : null}
+
                   {tasks.map((task, index) => (
                     <Task
                       key={task.id}
@@ -111,17 +146,19 @@ const Column: React.FC<IProps> = ({
                   ))}
                   {provided.placeholder}
                 </Group>
-                <Button
-                  fullWidth
-                  size="lg"
-                  radius="lg"
-                  variant="filled"
-                  onClick={() => handlers.open()}
-                >
-                  Add card
-                </Button>
+                {tasks.length > 0 ? (
+                  <Button
+                    fullWidth
+                    size="lg"
+                    radius="lg"
+                    variant="filled"
+                    onClick={() => handlers.open()}
+                  >
+                    Add card
+                  </Button>
+                ) : null}
                 <TaskModal
-                  key={editTask?.id}
+                  key={editTask?.id || ""}
                   opened={opened}
                   onClose={() => handlers.close()}
                   initialValues={{
