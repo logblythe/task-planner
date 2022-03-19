@@ -166,6 +166,7 @@ const Column: React.FC<IProps> = ({
                     title: editTask?.title || "",
                     description: editTask?.description || "",
                     priority: editTask?.priority || "",
+                    date: editTask?.date ? new Date(editTask.date) : "",
                   }}
                   onSave={(task) => {
                     editTask ? onEdit(task) : onCreateTask(task, column.id);

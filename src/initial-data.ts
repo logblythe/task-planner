@@ -5,6 +5,7 @@ export interface ITask {
   title?: string;
   description?: string;
   priority: Priority;
+  date: string;
 }
 
 export interface IColumn {
@@ -31,6 +32,7 @@ const initialData: IInitialData = {
       title: "Take out the garbage",
       description: "Take out the garbage",
       priority: "Low",
+      date: Date().toString(),
     },
     "task-2": {
       id: "task-2",
@@ -38,6 +40,7 @@ const initialData: IInitialData = {
       title: "Watch my favorite show",
       description: "Watch my favorite show",
       priority: "Low",
+      date: Date().toString(),
     },
     "task-3": {
       id: "task-3",
@@ -45,6 +48,7 @@ const initialData: IInitialData = {
       title: "Charge my phone",
       description: "Charge my phone",
       priority: "Low",
+      date: Date().toString(),
     },
     "task-4": {
       id: "task-4",
@@ -52,6 +56,7 @@ const initialData: IInitialData = {
       title: "Cook dinner",
       description: "Cook dinner",
       priority: "Low",
+      date: Date().toString(),
     },
     "task-5": {
       id: "task-5",
@@ -59,6 +64,7 @@ const initialData: IInitialData = {
       title: "Eat dinner",
       description: "Eat dinner",
       priority: "Low",
+      date: Date().toString(),
     },
     "task-6": {
       id: "task-6",
@@ -66,6 +72,7 @@ const initialData: IInitialData = {
       title: "Wake up early",
       description: "Wake up early",
       priority: "Low",
+      date: Date().toString(),
     },
   },
   columns: {

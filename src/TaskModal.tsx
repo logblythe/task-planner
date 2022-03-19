@@ -12,6 +12,7 @@ import {
 import { useForm, yupResolver } from "@mantine/form";
 import * as Yup from "yup";
 import { ITask, Priority } from "./initial-data";
+import { DatePicker } from "@mantine/dates";
 
 interface IProps {
   opened: boolean;
@@ -37,13 +38,14 @@ const TaskModal: React.FC<IProps> = ({
   });
 
   const handleSubmit = form.onSubmit((values: typeof form.values) => {
-    const { title, description, priority } = values;
+    const { title, description, priority, date } = values;
     const updatedTask: ITask = {
       id: initialValues.id || Date.now().toString(),
       title,
       content: description,
       description: description,
       priority: priority as Priority,
+      date: date,
     };
     onSave(updatedTask);
     onClose();
@@ -79,6 +81,13 @@ const TaskModal: React.FC<IProps> = ({
             autosize
             minRows={2}
             {...form.getInputProps("description")}
+          />
+          <Space h="md" />
+          <DatePicker
+            // minDate={new Date()}
+            placeholder="Pick date"
+            label="Completion date"
+            {...form.getInputProps("date")}
           />
           <Space h="md" />
           <Group position="center">
