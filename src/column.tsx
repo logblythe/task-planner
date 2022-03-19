@@ -88,12 +88,17 @@ const Column: React.FC<IProps> = ({
                   spacing="sm"
                   {...provided.droppableProps}
                   ref={provided.innerRef}
-                  style={{
-                    background: snapshot.isDraggingOver ? "red" : "inherit",
+                  sx={(theme) => ({
+                    background: snapshot.isDraggingOver
+                      ? theme.colorScheme === "dark"
+                        ? "DimGrey"
+                        : "AliceBlue"
+                      : "inherit",
                     transition: "background-color 0.2s ease",
                     minHeight: "100px",
                     width: "100%",
-                  }}
+                    borderRadius: 16,
+                  })}
                 >
                   {tasks.map((task, index) => (
                     <Task
