@@ -118,6 +118,29 @@ const BoardChild = () => {
     setState(newState);
   };
 
+  const handleEditTask = (task: ITask) => {
+    const newState = { ...state, tasks: { ...state.tasks, [task.id]: task } };
+    setState(newState);
+  };
+
+  const handleDeleteTask = (task: ITask, columnId: string) => {
+    const { [task.id]: _, ...res } = state.tasks;
+    const activeColumn = state.columns[columnId];
+    const newTaskIds = [...activeColumn.taskIds].filter(
+      (taskId) => taskId !== task.id
+    );
+    const newActiveColumn = { ...activeColumn, taskIds: newTaskIds };
+    const newState = {
+      ...state,
+      tasks: res,
+      columns: {
+        ...state.columns,
+        [columnId]: newActiveColumn,
+      },
+    };
+    setState(newState);
+  };
+
   return (
     <DragDropContext
       onDragEnd={handleDragEnd}
@@ -140,6 +163,8 @@ const BoardChild = () => {
                     isDropDisabled={isDropDisabled}
                     index={index}
                     onCreateTask={handleCreateTask}
+                    onEdit={handleEditTask}
+                    onDelete={handleDeleteTask}
                   />
                 );
               })}

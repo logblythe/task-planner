@@ -22,6 +22,7 @@ interface IInitialData {
   };
   columnOrder: string[];
 }
+
 const initialData: IInitialData = {
   tasks: {
     "task-1": {

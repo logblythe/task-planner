@@ -5,62 +5,80 @@ import {
   Group,
   Button,
   Title,
+  Chip,
 } from "@mantine/core";
-import React from "react";
+import React, { useState } from "react";
 import { Draggable, Droppable } from "react-beautiful-dnd";
-import { Plus } from "tabler-icons-react";
-import AddTaskModal from "./AddTaskModal";
+import TaskModal from "./TaskModal";
 import { IColumn, ITask } from "./initial-data";
 import Task from "./task";
+import { useDisclosure } from "@mantine/hooks";
 
-const Column = (props: {
+interface IProps {
   column: IColumn;
   tasks: ITask[];
   isDropDisabled: boolean;
   index: number;
   onCreateTask: (task: ITask, columnId: string) => void;
+  onEdit: (task: ITask) => void;
+  onDelete: (task: ITask, columnId: string) => void;
+}
+
+const Column: React.FC<IProps> = ({
+  column,
+  tasks,
+  isDropDisabled,
+  index,
+  onCreateTask,
+  onEdit,
+  onDelete,
 }) => {
   const theme = useMantineTheme();
 
   const containerStyles: CSSObject = {
     margin: theme.spacing.lg,
-    border: `1px solid ${
-      theme.colorScheme === "dark" ? theme.colors.blue[6] : theme.colors.blue[3]
-    }`,
-    borderRadius: 2,
+    // border: `1px solid ${
+    //   theme.colorScheme === "dark" ? theme.colors.blue[6] : theme.colors.blue[3]
+    // }`,
+    borderRadius: 12,
     minWidth: "25%",
-    backgroundColor:
-      theme.colorScheme === "dark"
-        ? theme.colors.dark[5]
-        : theme.colors.gray[1],
-    "&:hover": {
-      backgroundColor:
-        theme.colorScheme === "dark"
-          ? theme.colors.dark[4]
-          : theme.colors.gray[2],
-    },
+    // backgroundColor:
+    //   theme.colorScheme === "dark"
+    //     ? theme.colors.dark[5]
+    //     : theme.colors.gray[1],
+    // "&:hover": {
+    //   backgroundColor:
+    //     theme.colorScheme === "dark"
+    //       ? theme.colors.dark[4]
+    //       : theme.colors.gray[2],
+    // },
+  };
+  const [opened, handlers] = useDisclosure(false);
+  const [editTask, setEditTask] = useState<ITask>();
+
+  const handleEdit = (task: ITask) => {
+    setEditTask(task);
+    handlers.open();
   };
 
-  const [opened, setOpened] = React.useState(false);
-
-  const showAddModal = () => setOpened(true);
-
-  const closeAddModal = () => setOpened(false);
-
   return (
-    <Draggable draggableId={props.column.id} index={props.index}>
+    <Draggable draggableId={column.id} index={index}>
       {(provided) => (
         <Container
           sx={containerStyles}
           {...provided.draggableProps}
           ref={provided.innerRef}
         >
-          <Title {...provided.dragHandleProps}>{props.column.title}</Title>
+          <Chip size="xl" color="blue" variant="filled" checked={false}>
+            <Title order={2} {...provided.dragHandleProps}>
+              {column.title}
+            </Title>
+          </Chip>
           <Droppable
-            droppableId={props.column.id}
-            // type={props.column.id === "column-3" ? "done" : "active"}
+            droppableId={column.id}
+            // type={column.id === "column-3" ? "done" : "active"}
             // isDropDisabled={true}
-            // isDropDisabled={props.isDropDisabled}
+            // isDropDisabled={isDropDisabled}
           >
             {(provided, snapshot) => (
               <Group direction="column" py="sm" spacing="xl">
@@ -77,24 +95,39 @@ const Column = (props: {
                     width: "100%",
                   }}
                 >
-                  {props.tasks.map((task, index) => (
-                    <Task key={task.id} task={task} index={index} />
+                  {tasks.map((task, index) => (
+                    <Task
+                      key={task.id}
+                      task={task}
+                      index={index}
+                      onEdit={() => handleEdit(task)}
+                      onDelete={() => onDelete(task, column.id)}
+                    />
                   ))}
                   {provided.placeholder}
                 </Group>
                 <Button
                   fullWidth
-                  variant="outline"
-                  leftIcon={<Plus />}
-                  onClick={showAddModal}
+                  size="lg"
+                  radius="lg"
+                  variant="filled"
+                  onClick={() => handlers.open()}
                 >
-                  Card
+                  Add card
                 </Button>
-                <AddTaskModal
+                <TaskModal
+                  key={editTask?.id}
                   opened={opened}
-                  onClose={closeAddModal}
-                  onCreateTask={(task) => {
-                    props.onCreateTask(task, props.column.id);
+                  onClose={() => handlers.close()}
+                  initialValues={{
+                    id: editTask?.id || "",
+                    title: editTask?.title || "",
+                    description: editTask?.description || "",
+                    priority: editTask?.priority || "",
+                  }}
+                  onSave={(task) => {
+                    editTask ? onEdit(task) : onCreateTask(task, column.id);
+                    setEditTask(undefined);
                   }}
                 />
               </Group>

@@ -16,7 +16,8 @@ import { ITask, Priority } from "./initial-data";
 interface IProps {
   opened: boolean;
   onClose: VoidFunction;
-  onCreateTask: (task: ITask) => void;
+  onSave: (task: ITask) => void;
+  initialValues: any;
 }
 
 const schema = Yup.object().shape({
@@ -24,27 +25,27 @@ const schema = Yup.object().shape({
   priority: Yup.string().required("Required"),
 });
 
-const AddTaskModal: React.FC<IProps> = ({ opened, onClose, onCreateTask }) => {
+const TaskModal: React.FC<IProps> = ({
+  initialValues,
+  opened,
+  onClose,
+  onSave,
+}) => {
   const form = useForm({
-    initialValues: {
-      title: "",
-      description: "",
-      priority: "",
-    },
+    initialValues: initialValues,
     schema: yupResolver(schema),
   });
 
   const handleSubmit = form.onSubmit((values: typeof form.values) => {
-    debugger;
     const { title, description, priority } = values;
-    const task: ITask = {
-      id: Date.now().toString(),
+    const updatedTask: ITask = {
+      id: initialValues.id || Date.now().toString(),
       title,
       content: description,
       description: description,
       priority: priority as Priority,
     };
-    onCreateTask(task);
+    onSave(updatedTask);
     onClose();
   });
 
@@ -91,4 +92,4 @@ const AddTaskModal: React.FC<IProps> = ({ opened, onClose, onCreateTask }) => {
   );
 };
 
-export default AddTaskModal;
+export default TaskModal;
