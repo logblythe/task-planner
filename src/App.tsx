@@ -1,14 +1,19 @@
 import React from "react";
-import "./App.css";
 import {
   ColorScheme,
   ColorSchemeProvider,
   MantineProvider,
 } from "@mantine/core";
+import { useLocalStorage } from "@mantine/hooks";
+import "./App.css";
 import Board from "./Board";
 
 function App() {
-  const [colorScheme, setColorScheme] = React.useState<ColorScheme>("light");
+  const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
+    key: "color-scheme",
+    defaultValue: "light",
+  });
+
   const toggleColorScheme = (value?: ColorScheme) =>
     setColorScheme(value || (colorScheme === "dark" ? "light" : "dark"));
 
